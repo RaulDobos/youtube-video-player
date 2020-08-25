@@ -1,19 +1,8 @@
-package org.fasttrackit.youtubevideoplayer.domain;
+package org.fasttrackit.youtubevideoplayer.transfer;
 
-import org.springframework.lang.NonNull;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
-@Entity
-public class Link {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class SaveLinkRequest {
 
     @NotNull
     private String link;
@@ -24,29 +13,19 @@ public class Link {
     private String imageUrl;
     private String time;
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    @NotNull
     public String getLink() {
         return link;
     }
 
-    public void setLink(@NotNull String link) {
+    public void setLink(String link) {
         this.link = link;
     }
 
-    @NotNull
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(@NotNull String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -68,12 +47,11 @@ public class Link {
 
     @Override
     public String toString() {
-        return "Link{" +
-                "id=" + id +
-                ", link='" + link + '\'' +
+        return "SaveLinkRequest{" +
+                "link='" + link + '\'' +
                 ", title='" + title + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
-                ", time='" + time + "\'" +
+                ", time='" + time + '\'' +
                 '}';
     }
 }
