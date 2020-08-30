@@ -15,6 +15,7 @@ public class LinkService {
 
     private final LinkRepository linkRepository;
 
+    //dependency injection
     @Autowired
     public LinkService(LinkRepository linkRepository) {
         this.linkRepository = linkRepository;
