@@ -6,6 +6,7 @@ import org.fasttrackit.youtubevideoplayer.persistence.LinkRepository;
 import org.fasttrackit.youtubevideoplayer.transfer.SaveLinkRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class LinkService {
 
     public Link getLink(long id){
         LOGGER.info("retrieving link {}", id);
-        Optional<Link> linkOptional = linkRepository.findById(id);
+        //Optional<Link> linkOptional = linkRepository.findById(id);
 
 //        if(linkOptional.isPresent()){
 //            return linkOptional.get();
@@ -48,6 +49,23 @@ public class LinkService {
         return linkRepository.findById(id)
                  // Lambda expression
                 .orElseThrow(() -> new ResourceNotFoundException("Link " + id + " not found."));
+    }
+
+    public Link updateLink(long id, SaveLinkRequest request){
+        LOGGER.info("Updating link {}: {}", id, request);
+
+        Link link = getLink(id);
+
+        BeanUtils.copyProperties(request, link);
+
+        return linkRepository.save(link);
+
+    }
+
+    public void deleteLink(long id){
+        LOGGER.info("Deleting link {}", id);
+
+        linkRepository.deleteById(id);
     }
 
 

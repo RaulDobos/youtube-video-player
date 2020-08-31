@@ -61,6 +61,34 @@ class LinkServiceIntegrationTests {
 
     }
 
+    @Test
+    void updateLink_whenValidRequest_thenReturnUpdatedLink(){
+        Link link = createLink();
+
+        SaveLinkRequest request = new SaveLinkRequest();
+        request.setLink("https://www.youtube.com/watch?v=Sik_gQ-tHHc");
+        request.setTitle("Rick Astley - Better Now - (Post Malone Cover)");
+        request.setTime("?t=30");
+
+        Link updatedLink = linkService.updateLink(link.getId(), request);
+
+        assertThat(updatedLink, notNullValue());
+        assertThat(updatedLink.getId(), is(link.getId()));
+        assertThat(updatedLink.getLink(), is(link.getLink()));
+        assertThat(updatedLink.getTitle(), is(link.getTitle()));
+    }
+
+    void deleteLink_whenExistingLink_thenLinkDoesNotExistAnymore() {
+        Link link = createLink();
+
+        linkService.deleteLink(link.getId());
+
+        Assertions.assertThrows(ResourceNotFoundException.class,
+                () -> linkService.getLink(link.getId()));
+
+
+    }
+
     private Link createLink() {
         SaveLinkRequest request = new SaveLinkRequest();
         request.setLink("https://www.youtube.com/watch?v=L_jWHffIx5E");
