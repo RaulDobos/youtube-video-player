@@ -3,11 +3,14 @@ package org.fasttrackit.youtubevideoplayer.service;
 import org.fasttrackit.youtubevideoplayer.domain.Link;
 import org.fasttrackit.youtubevideoplayer.exception.ResourceNotFoundException;
 import org.fasttrackit.youtubevideoplayer.persistence.LinkRepository;
+import org.fasttrackit.youtubevideoplayer.transfer.GetLinkRequest;
 import org.fasttrackit.youtubevideoplayer.transfer.SaveLinkRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -49,6 +52,17 @@ public class LinkService {
         return linkRepository.findById(id)
                  // Lambda expression
                 .orElseThrow(() -> new ResourceNotFoundException("Link " + id + " not found."));
+    }
+
+    public Page<Link> getLinks(GetLinkRequest request, Pageable pageable) {
+        if(request.getPartialLink() != null && request.getPartialTitle() != null){
+            return linkRepository.findByLinkContainingAndTitleContaining(
+                    request.getPartialLink(), request.getPartialTitle(), pageable);
+        } else if (request.getPartialLink() != null) {
+            return linkRepository.findByLinkContaining(request.getPartialLink(), pageable);
+        } else {
+            return linkRepository.findAll(pageable);
+        }
     }
 
     public Link updateLink(long id, SaveLinkRequest request){
