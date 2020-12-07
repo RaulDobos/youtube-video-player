@@ -19,4 +19,5 @@ public interface LinkRepository extends JpaRepository<Link, Long> {
     Page<Link> findByOptionalCriteria(String partialTitle, String partialImageUrl, Pageable pageable);
 
 
+
 }
